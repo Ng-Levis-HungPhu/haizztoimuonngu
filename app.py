@@ -20,13 +20,18 @@ MODEL_DIR = "1. SAVING MODELS"
 def predict():
     try:
         data = request.get_json()
-        mode = data.get("mode", "").strip()
+        if not data:
+            return jsonify({"error": "No input data provided"}), 400
 
-        mach = float(data['mach'])
-        aoa = float(data['aoa'])
-        ln = float(data['ln'])
-        swept = float(data['swept'])
-        lln = float(data['lln'])
+        mode = data.get("mode", "").strip()
+        try:
+            mach = float(data["mach"])
+            aoa = float(data["aoa"])
+            ln = float(data["ln"])
+            swept = float(data["swept"])
+            lln = float(data["lln"])
+        except (ValueError, KeyError):
+            return jsonify({"error": "Vui lòng nhập đúng định dạng số cho tất cả các thông số"}), 400
 
         if mode == "NASA":
             if not (-4 <= aoa <= 25):
