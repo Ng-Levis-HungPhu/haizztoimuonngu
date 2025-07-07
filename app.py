@@ -112,14 +112,20 @@ def predict():
             return jsonify({"error": f"Unsupported mode: {mode}"}), 400
 
 
-        cl_pred = float(model_cl.predict(input_data_scaled)[0][0])
-        cd_pred = float(model_cd.predict(input_data_scaled)[0][0])
-
-        return jsonify({
-            "cl": round(cl_pred, 5),
-            "cd": round(cd_pred, 5),
-            "warning": warning_msg
-        })
+        cl_pred = model_cl.predict(input_data_scaled, verbose=0)[0][0]
+        cd_pred = model_cd.predict(input_data_scaled, verbose=0)[0][0]
+        
+        if mode == "NASA":
+            return jsonify({
+                "cl": round(cl_pred, 5),
+                "cd": round(cd_pred, 5),
+                "warning": warning_msg
+            })
+        else:
+            return jsonify({
+                "cl": round(cl_pred, 5),
+                "cd": round(cd_pred, 5)
+            })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
