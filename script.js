@@ -338,7 +338,6 @@ document.querySelector('.overlap-3').addEventListener('click', async () => {
       }
       return;
     }
-    const data = await response.json();
 
     document.querySelector(".text-wrapper-18").textContent = data.cl;
     document.querySelector(".text-wrapper-16").textContent = data.cd;
