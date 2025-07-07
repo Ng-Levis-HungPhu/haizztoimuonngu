@@ -329,9 +329,16 @@ document.querySelector('.overlap-3').addEventListener('click', async () => {
     const data = await response.json();
 
     if (!response.ok) {
-      alert(data.error || "Lỗi không xác định từ server");
+      const text = await response.text();
+      try {
+        const errorData = JSON.parse(text);
+        alert(errorData.error || "Lỗi không xác định từ server");
+      } catch {
+        alert("Lỗi không xác định từ server");
+      }
       return;
     }
+    const data = await response.json();
 
     document.querySelector(".text-wrapper-18").textContent = data.cl;
     document.querySelector(".text-wrapper-16").textContent = data.cd;
