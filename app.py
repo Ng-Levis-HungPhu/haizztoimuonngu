@@ -41,6 +41,12 @@ def load_model_and_scaler(prefix):
     model_cd = tf.keras.models.load_model(os.path.join(MODEL_DIR, f"{prefix}_cd.h5"))
     with open(os.path.join(MODEL_DIR, f"{prefix}.pkl"), "rb") as f:
         scaler = pickle.load(f)
+    if not os.path.exists(model_cl_path):
+        print("[ERROR] Không tìm thấy model CL:", model_cl_path)
+    if not os.path.exists(model_cd_path):
+        print("[ERROR] Không tìm thấy model CD:", model_cd_path)
+    if not os.path.exists(scaler_path):
+        print("[ERROR] Không tìm thấy scaler:", scaler_path)
     return model_cl, model_cd, scaler
 
 
@@ -92,4 +98,6 @@ def predict():
         return jsonify(response)
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 400
